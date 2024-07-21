@@ -6,6 +6,31 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useRouter } from 'next/navigation';
 
+// Función para generar opciones de hora en intervalos de media hora
+const generateTimeOptions = () => {
+  const times = [];
+  const addTime = (hour: number, minute: number) => {
+    const time = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+    times.push(time);
+  };
+
+  // Intervalos de 9:00 a 14:00
+  for (let h = 9; h <= 14; h++) {
+    addTime(h, 0);
+    addTime(h, 30);
+  }
+
+  // Intervalos de 17:00 a 20:00
+  for (let h = 17; h <= 20; h++) {
+    addTime(h, 0);
+    addTime(h, 30);
+  }
+
+  return times;
+};
+
+const timeOptions = generateTimeOptions();
+
 interface FormData {
   dia: string;
   hora: string;
@@ -39,7 +64,7 @@ const ConcertarCitaForm = () => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
-  
+
     try {
       const response = await fetch('/api/crear-cita', {
         method: 'POST',
@@ -48,18 +73,18 @@ const ConcertarCitaForm = () => {
         },
         body: JSON.stringify(formData),
       });
-  
+
       if (!response.ok) {
         const data = await response.json();
         throw new Error(data.message || 'Error al almacenar la cita');
       }
-  
+
       const result = await response.json();
       console.log('Cita almacenada correctamente:', result);
-  
+
       setSuccess('Cita creada exitosamente');
       router.push('/'); // Redirigir a la página principal o a una página de confirmación
-  
+
       setFormData({
         dia: '',
         hora: '',
@@ -78,9 +103,9 @@ const ConcertarCitaForm = () => {
       <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
           <div className="p-6 bg-white border-b border-secondary">
-            <h2 className="text-2xl font-bold mb-4">Pide tu cita en Nutribert</h2>
-            <p className="text-gray-700 mb-4">Completa los siguientes campos para concertar tu cita.</p>
-            <p className="text-gray-700 mb-4">Recuerda que debes elegir la hora en punto o a y media.</p>
+            <h2 className="text-2xl font-bold mb-4 text-primary">Pide tu cita en Nutribert</h2>
+            <p className="text-sm text-gray-700 mb-4">Completa los siguientes campos para concertar tu cita.</p>
+            
             {error && <p className="text-red-500 mb-4">{error}</p>}
             {success && <p className="text-green-500 mb-4">{success}</p>}
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -99,15 +124,19 @@ const ConcertarCitaForm = () => {
                 </div>
                 <div>
                   <label htmlFor="hora" className="block text-sm font-medium text-gray-700">Hora</label>
-                  <Input
-                    type="time"
+                  <select
                     id="hora"
                     name="hora"
                     value={formData.hora}
                     onChange={handleChange}
-                    className="mt-1"
+                    className="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
                     required
-                  />
+                  >
+                    <option value="" disabled>Selecciona una hora</option>
+                    {timeOptions.map(time => (
+                      <option key={time} value={time}>{time}</option>
+                    ))}
+                  </select>
                 </div>
               </div>
 

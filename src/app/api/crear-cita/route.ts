@@ -5,6 +5,7 @@ import { CitaSchema } from '../../../lib/zod'; // Ajusta esta ruta si es necesar
 
 const prisma = new PrismaClient();
 
+// Crear una cita
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -32,7 +33,7 @@ export async function POST(request: Request) {
   }
 }
 
-// Manejar GET para obtener todas las citas
+// Obtener todas las citas
 export async function GET(request: Request) {
   try {
     const url = new URL(request.url);
@@ -52,5 +53,28 @@ export async function GET(request: Request) {
     return NextResponse.json(citas, { status: 200 });
   } catch (error: any) {
     return NextResponse.json({ message: 'Error al obtener las citas', error: error.message }, { status: 500 });
+  }
+}
+
+// Eliminar una cita
+export async function DELETE(request: Request) {
+  try {
+    const url = new URL(request.url);
+    const idParam = url.searchParams.get('id');
+
+    if (!idParam || isNaN(Number(idParam))) {
+      return NextResponse.json({ message: 'ID inválido' }, { status: 400 });
+    }
+
+    const id = Number(idParam);
+
+    // Eliminar la cita de la base de datos
+    await prisma.cita.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ message: 'Cita eliminada exitosamente' }, { status: 200 });
+  } catch (error: any) {
+    return NextResponse.json({ message: 'Error al eliminar la cita', error: error.message }, { status: 500 });
   }
 }

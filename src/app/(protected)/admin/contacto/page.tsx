@@ -1,64 +1,74 @@
-"use client";
+// src/app/admin/contacto/page.tsx
+'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
+import { ListadoContactos } from '@/components/ui/ListadoContactos';
+import { Input } from '@/components/ui/input';
 
 const ContactoPage = () => {
   const [contactos, setContactos] = useState<any[]>([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchContactos = async () => {
-      const response = await fetch('/api/contacto');
-      const data = await response.json();
-      setContactos(data);
+      try {
+        const response = await fetch(`/api/contacto?nombre=${encodeURIComponent(searchTerm)}`);
+        if (!response.ok) {
+          throw new Error('Error al obtener los contactos');
+        }
+        const data = await response.json();
+        setContactos(data);
+      } catch (error) {
+        setError('Error al cargar los contactos');
+      }
     };
 
     fetchContactos();
-  }, []);
+  }, [searchTerm]);
 
-  const deleteContacto = async (id: number) => {
-    await fetch(`/api/contacto?id=${id}`, {
-      method: 'DELETE',
-    });
-    setContactos(contactos.filter((contacto) => contacto.id !== id));
+  const handleDelete = async (id: number) => {
+    const isConfirmed = window.confirm('¿Estás seguro de que deseas eliminar este contacto?');
+
+    if (!isConfirmed) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/contacto?id=${id}`, {
+        method: 'DELETE',
+      });
+      if (!response.ok) {
+        throw new Error('Error al eliminar el contacto');
+      }
+      setContactos(contactos.filter(contacto => contacto.id !== id));
+    } catch (error) {
+      setError('Error al eliminar el contacto');
+    }
   };
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">Listado de Contactos</h1>
-      <div className="bg-white shadow-md rounded-lg p-6">
-        <table className="min-w-full bg-white border border-gray-300">
-          <thead>
-            <tr>
-              <th className="border-b py-2 px-4">Nombre</th>
-              <th className="border-b py-2 px-4">Email</th>
-              <th className="border-b py-2 px-4">Teléfono</th>
-              <th className="border-b py-2 px-4">Mensaje</th>
-              <th className="border-b py-2 px-4">Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {contactos.map((contacto) => (
-              <tr key={contacto.id}>
-                <td className="border-b py-2 px-4">{contacto.nombre}</td>
-                <td className="border-b py-2 px-4">{contacto.email}</td>
-                <td className="border-b py-2 px-4">{contacto.telefono}</td>
-                <td className="border-b py-2 px-4">{contacto.mensaje}</td>
-                <td className="border-b py-2 px-4">
-                  <button 
-                    onClick={() => deleteContacto(contacto.id)}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    Eliminar
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div className="py-12">
+      <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+          <div className="p-6 bg-white border-b border-secondary">
+            <h2 className="text-2xl font-bold mb-4">Listado de Contactos</h2>
+            {error && <p className="text-red-500 mb-4">{error}</p>}
+            <div className="mb-4">
+              <Input
+                type="text"
+                placeholder="Buscar por nombre"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="mb-4"
+              />
+            </div>
+            <ListadoContactos contactos={contactos} onDelete={handleDelete} />
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
 export default ContactoPage;
-

@@ -1,8 +1,9 @@
 'use client'
+
 import { useEffect, useState } from 'react';
 import { ListarCitas } from '../../../../components/ui/ListarCitas';
-
 import { Input } from '@/components/ui/input';
+
 const ListadoCitasPage = () => {
   const [citas, setCitas] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -24,6 +25,25 @@ const ListadoCitasPage = () => {
     fetchCitas();
   }, [searchTerm]);
 
+  const handleDelete = async (id: number) => {
+    const confirmDelete = window.confirm('¿Estás seguro de que quieres eliminar esta cita?');
+    if (!confirmDelete) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/crear-cita?id=${id}`, { method: 'DELETE' });
+      if (response.ok) {
+        setCitas(citas.filter(cita => cita.id !== id));
+      } else {
+        const errorData = await response.json();
+        console.error('Error al eliminar la cita:', errorData.message);
+      }
+    } catch (error) {
+      console.error('Error al eliminar la cita', error);
+    }
+  };
+
   return (
     <div className="py-12">
       <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -40,7 +60,7 @@ const ListadoCitasPage = () => {
                 className="mb-4"
               />
             </div>
-            <ListarCitas citas={citas} />
+            <ListarCitas citas={citas} onDelete={handleDelete} />
           </div>
         </div>
       </div>

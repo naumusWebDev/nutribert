@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { LoginSchema } from "@/lib/zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,12 +19,7 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
-interface FormLoginProps {
-  isVerified: boolean;
-  OAuthAccountNotLinked: boolean;
-}
-
-const FormLogin = ({ isVerified, OAuthAccountNotLinked }: FormLoginProps) => {
+const FormLogin = () => {
   const [error, setError] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -53,16 +48,7 @@ const FormLogin = ({ isVerified, OAuthAccountNotLinked }: FormLoginProps) => {
     <div className="bg-white py-12 px-6 sm:px-8 shadow-lg rounded-lg">
       <div className="max-w-md mx-auto">
         <h1 className="mb-5 text-center text-2xl font-bold">Iniciar sesión</h1>
-        {isVerified && (
-          <p className="text-center text-green-500 mb-5 text-sm">
-            Email verificado, ahora puedes iniciar sesión
-          </p>
-        )}
-        {OAuthAccountNotLinked && (
-          <p className="text-center text-red-500 mb-5 text-sm">
-            Para confirmar tu identidad, inicia sesión con la misma cuenta que usaste originalmente.
-          </p>
-        )}
+        {error && <p className="text-center text-red-500 mb-5 text-sm">{error}</p>}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
@@ -103,7 +89,6 @@ const FormLogin = ({ isVerified, OAuthAccountNotLinked }: FormLoginProps) => {
                 </FormItem>
               )}
             />
-            {error && <FormMessage className="text-red-500 text-xs mt-2">{error}</FormMessage>}
             <div className="flex flex-col items-center mt-4">
               <Button
                 type="submit"
