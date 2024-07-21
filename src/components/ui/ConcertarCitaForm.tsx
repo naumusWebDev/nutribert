@@ -27,7 +27,7 @@ const ConcertarCitaForm = () => {
   const [success, setSuccess] = useState<string | null>(null);
   const router = useRouter();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prevState => ({
       ...prevState,
@@ -126,7 +126,7 @@ const ConcertarCitaForm = () => {
                     id="hora"
                     name="hora"
                     value={formData.hora}
-                    onChange={handleChange}
+                    onChange={handleChange as React.ChangeEventHandler<HTMLSelectElement>}
                     className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-primary focus:ring-primary"
                     required
                   >
