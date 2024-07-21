@@ -53,4 +53,22 @@ model VerificationToken {
  
   @@id([identifier, token])
 }
+model Contacto {
+  id        Int      @id @default(autoincrement())
+  nombre    String
+  email     String   @unique
+  telefono  String
+  mensaje   String
+  createdAt DateTime @default(now())
+}
+model Cita {
+  id        Int      @id @default(autoincrement())
+  dia       DateTime
+  hora      String   // Cambiado de DateTime a String
+  nombre    String
+  telefono  String
+  notas     String?
+  createdAt DateTime @default(now())
+}
+
  

@@ -19,9 +19,6 @@ import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
-//import { FaGithub, FaGoogle } from "react-icons/fa6";
-//import ButtonSocial from "./button-social";
-
 interface FormLoginProps {
   isVerified: boolean;
   OAuthAccountNotLinked: boolean;
@@ -32,7 +29,7 @@ const FormLogin = ({ isVerified, OAuthAccountNotLinked }: FormLoginProps) => {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof loginSchema>>({
+  const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
       email: "",
@@ -53,78 +50,83 @@ const FormLogin = ({ isVerified, OAuthAccountNotLinked }: FormLoginProps) => {
   }
 
   return (
-    <div className="max-w-52">
-      <h1 className="mb-5 text-center text-2xl">Login</h1>
-      {isVerified && (
-        <p className="text-center text-green-500 mb-5 text-sm">
-          Email verified, you can now login
-        </p>
-      )}
-      {OAuthAccountNotLinked && (
-        <p className="text-center text-red-500 mb-5 text-sm">
-          To confirm your identity, sign in with the same account you used
-          originally.
-        </p>
-      )}
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8"
-        >
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="email"
-                    type="email"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder="password"
-                    type="password"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {error && <FormMessage>{error}</FormMessage>}
-          <Button
-            type="submit"
-            disabled={isPending}
-          >
-            Submit
-          </Button>
-        </form>
-      </Form>
-      {/* <div className="mt-5 space-y-4">
-        <ButtonSocial provider="github">
-          <FaGithub className="mr-2 h-4 w-4" />
-          <span>Sign in with Github</span>
-        </ButtonSocial>
-        <ButtonSocial provider="google">
-          <FaGoogle className="mr-2 h-4 w-4" />
-          <span>Sign in with Google</span>
-        </ButtonSocial>
-      </div> */}
+    <div className="bg-white py-12 px-6 sm:px-8 shadow-lg rounded-lg">
+      <div className="max-w-md mx-auto">
+        <h1 className="mb-5 text-center text-2xl font-bold">Iniciar sesión</h1>
+        {isVerified && (
+          <p className="text-center text-green-500 mb-5 text-sm">
+            Email verificado, ahora puedes iniciar sesión
+          </p>
+        )}
+        {OAuthAccountNotLinked && (
+          <p className="text-center text-red-500 mb-5 text-sm">
+            Para confirmar tu identidad, inicia sesión con la misma cuenta que usaste originalmente.
+          </p>
+        )}
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="email">Correo electrónico</FormLabel>
+                  <FormControl>
+                    <Input
+                      id="email"
+                      type="email"
+                      {...field}
+                      placeholder="correo electrónico"
+                      className="block mt-1 w-full focus:outline-none focus:border-primary focus:ring focus:ring-primary-dark focus:ring-opacity-50"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor="password">Contraseña</FormLabel>
+                  <FormControl>
+                    <Input
+                      id="password"
+                      type="password"
+                      {...field}
+                      placeholder="contraseña"
+                      className="block mt-1 w-full focus:outline-none focus:border-primary focus:ring focus:ring-primary-dark focus:ring-opacity-50"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {error && <FormMessage className="text-red-500 text-xs mt-2">{error}</FormMessage>}
+            <div className="flex flex-col items-center mt-4">
+              <Button
+                type="submit"
+                disabled={isPending}
+                className="bg-primary hover:bg-primary-dark text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+              >
+                Iniciar sesión
+              </Button>
+              <a
+                href="/forgot-password"
+                className="mt-6 underline text-sm text-gray-600 hover:text-gray-900"
+              >
+                ¿Olvidaste tu contraseña?
+              </a>
+            </div>
+          </form>
+        </Form>
+      </div>
     </div>
   );
 };
+
 export default FormLogin;
+
+
+

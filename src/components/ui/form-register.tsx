@@ -29,6 +29,7 @@ const FormRegister = () => {
     defaultValues: {
       email: "",
       password: "",
+      confirmPassword: "",
       name: "",
     },
   });
@@ -46,24 +47,23 @@ const FormRegister = () => {
   }
 
   return (
-    <div className="max-w-52">
-      <h1>Register</h1>
+    <div className="bg-white py-12 px-6 sm:px-8 shadow-lg rounded-lg max-w-md mx-auto">
+      <h1 className="text-center text-2xl font-bold mb-6">Registrarse</h1>
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8"
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name</FormLabel>
+                <FormLabel htmlFor="name">Nombre</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Name"
+                    id="name"
+                    placeholder="Nombre"
                     type="text"
                     {...field}
+                    className="block mt-1 w-full focus:outline-none focus:border-primary focus:ring focus:ring-primary-dark focus:ring-opacity-50"
                   />
                 </FormControl>
                 <FormMessage />
@@ -75,12 +75,14 @@ const FormRegister = () => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel htmlFor="email">Correo electrónico</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="email"
+                    id="email"
+                    placeholder="Correo electrónico"
                     type="email"
                     {...field}
+                    className="block mt-1 w-full focus:outline-none focus:border-primary focus:ring focus:ring-primary-dark focus:ring-opacity-50"
                   />
                 </FormControl>
                 <FormMessage />
@@ -92,28 +94,53 @@ const FormRegister = () => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel htmlFor="password">Contraseña</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="password"
+                    id="password"
+                    placeholder="Contraseña"
                     type="password"
                     {...field}
+                    className="block mt-1 w-full focus:outline-none focus:border-primary focus:ring focus:ring-primary-dark focus:ring-opacity-50"
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          {error && <FormMessage>{error}</FormMessage>}
-          <Button
-            type="submit"
-            disabled={isPending}
-          >
-            Submit
-          </Button>
+          <FormField
+            control={form.control}
+            name="confirmPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor="confirmPassword">Confirmar Contraseña</FormLabel>
+                <FormControl>
+                  <Input
+                    id="confirmPassword"
+                    placeholder="Confirmar Contraseña"
+                    type="password"
+                    {...field}
+                    className="block mt-1 w-full focus:outline-none focus:border-primary focus:ring focus:ring-primary-dark focus:ring-opacity-50"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {error && <FormMessage className="text-red-500 text-xs mt-2">{error}</FormMessage>}
+          <div className="flex justify-center mt-6">
+            <Button
+              type="submit"
+              disabled={isPending}
+              className="bg-primary hover:bg-primary-dark text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+            >
+              Registrarse
+            </Button>
+          </div>
         </form>
       </Form>
     </div>
   );
 };
+
 export default FormRegister;
