@@ -13,8 +13,8 @@ export async function POST(request: Request) {
     // Validar y formatear los datos
     const parsedData = CitaSchema.parse(body);
 
-    // Convierte el campo 'dia' al formato DateTime (ISO-8601)
-    const formattedDia = new Date(parsedData.dia).toISOString(); // Convierte a formato ISO-8601
+    // Convierte el campo 'dia' al formato Date
+    const formattedDia = new Date(parsedData.dia);
 
     // Crear la cita en la base de datos
     const newCita = await prisma.cita.create({
@@ -30,6 +30,8 @@ export async function POST(request: Request) {
     return NextResponse.json(newCita, { status: 201 });
   } catch (error: any) {
     return NextResponse.json({ message: 'Error al crear la cita', error: error.message }, { status: 400 });
+  } finally {
+    await prisma.$disconnect();
   }
 }
 
