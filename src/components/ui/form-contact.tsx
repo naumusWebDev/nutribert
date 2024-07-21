@@ -124,7 +124,7 @@ const ContactoForm = () => {
                   onChange={(e) => setMensaje(e.target.value)}
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-primary"
                   placeholder="Escribe tu mensaje aquí"
-                  rows="4"
+                  rows={4}  
                   required
                 ></textarea>
                 {error && <p className="text-red-500 text-xs mt-2">{error}</p>}
