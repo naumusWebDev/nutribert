@@ -5,7 +5,7 @@ import React from 'react';
 const Hero = () => {
   return (
     <>
-    <div className="bg-white text-black py-32 px-8 sm:px-6 lg:px-8 border-b border-primary  bg-cover">
+    <div className="bg-white text-black py-32 px-8 sm:px-6 lg:px-8 border-b border-primary  bg-[url('/nutribert.jpg')] bg-cover">
       <div className="max-w-7xl mx-auto">
       <p className="text-2xl sm:text-3xl md:text-4xl font-bold leading-tight text-primary mb-4">
         Nutribert

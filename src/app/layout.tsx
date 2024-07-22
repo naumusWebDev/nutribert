@@ -5,6 +5,7 @@ import Header from '@/components/ui/Header';
 import Footer from '@/components/ui/FooterComponent';
 
 
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -24,7 +25,7 @@ export default function RootLayout({
           <Header />
           {children}
           <Footer />
-        
+          
       </body>
     </html>
   );

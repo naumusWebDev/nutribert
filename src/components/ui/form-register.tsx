@@ -18,6 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
+import Image from 'next/image';
 
 const FormRegister = () => {
   const [error, setError] = useState<string | null>(null);
@@ -41,14 +42,18 @@ const FormRegister = () => {
       if (response.error) {
         setError(response.error);
       } else {
-        router.push("/dashboard");
+        router.push("/admin");
       }
     });
   }
 
   return (
     <div className="bg-white py-12 px-6 sm:px-8 shadow-lg rounded-lg max-w-md mx-auto">
-      <h1 className="text-center text-2xl font-bold mb-6">Registrarse</h1>
+      <div className="flex justify-center mb-6">
+  <Image width={120} height={50} src="/logo.png" alt="Logo" />
+</div>
+
+      <h1 className="text-center text-2xl font-bold mb-6">Regístrate en Nutribert</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
@@ -132,7 +137,7 @@ const FormRegister = () => {
             <Button
               type="submit"
               disabled={isPending}
-              className="bg-primary hover:bg-primary-dark text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+              className="w-full bg-primary hover:bg-primary-dark text-white py-2 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
             >
               Registrarse
             </Button>

@@ -30,7 +30,7 @@ const cards = [
 const Card = () => {
   return (
     <>
-    <div className="bg-white py-24 px-6 sm:px-8">
+    <div className="bg-orange-50 py-24 px-6 sm:px-8">
       <div className="max-w-7xl mx-auto">
        
 
