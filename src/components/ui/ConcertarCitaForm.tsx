@@ -58,7 +58,7 @@ const ConcertarCitaForm = () => {
       console.log('Cita almacenada correctamente:', result);
   
       setSuccess('Cita creada exitosamente');
-      router.push('/'); // Redirigir a la página principal o a una página de confirmación
+      router.push('/admin'); // Redirigir a la página principal o a una página de confirmación
   
       setFormData({
         dia: '',
