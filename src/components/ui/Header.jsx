@@ -3,6 +3,9 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+
+
+
 const Header = () => {
   return (
     <header className="bg-white shadow-md py-4 px-6 sm:px-8 border-b border-primary">

@@ -1,4 +1,5 @@
 'use client'
+import LogoutButton from "@/components/ui/logout-button";
 import Link from "next/link";
 import { usePathname } from 'next/navigation'; // Para Next.js 13 con App Router
 
@@ -44,6 +45,7 @@ const AdminHeader = () => {
         >
           Pedir Cita
         </Link>
+        <LogoutButton />
       </nav>
     </header>
   );
